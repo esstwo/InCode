@@ -13,8 +13,20 @@ public class Elevator {
 	private ElevatorDirection direction = ElevatorDirection.GOING_UP;
 	private Integer currentFloor = 1;
 	private Integer totalFloors;
+	
+	public Integer getCurrentFloor() {
+		return currentFloor;
+	}
 
 	private TreeSet<Integer> upRequestQueue = new TreeSet<>();
+	public TreeSet<Integer> getUpRequestQueue() {
+		return upRequestQueue;
+	}
+
+	public TreeSet<Integer> getDownRequestQueue() {
+		return downRequestQueue;
+	}
+
 	private TreeSet<Integer> downRequestQueue = new TreeSet<>();
 
 	
@@ -137,7 +149,7 @@ public class Elevator {
 			}
 			removeCurrentStopFromQueue(); 
 			openDoor();
-			Thread.sleep(5000);
+			Thread.sleep(5000); //giving users 5 secs to get out of the elevator :)
 			closeDoor(); 
 		}
 
@@ -203,6 +215,7 @@ public class Elevator {
 
 	/**
 	 * Go up one floor at a time
+	 * Adding a time of 1 sec to traverse each floor. (for readability of output purposes only)
 	 */
 	public void goUp() {
 		currentFloor++;
@@ -216,6 +229,7 @@ public class Elevator {
 
 	/**
 	 * Go down one floor at a time
+	 * Adding a time of 1 sec to traverse each floor. (for readability of output purposes only)
 	 */
 	public void goDown() {
 		currentFloor--;
@@ -226,7 +240,4 @@ public class Elevator {
 		}
 		System.out.println("Elevator id: " + id + " Current Floor: " + currentFloor);
 	}
-
-
-
 }
