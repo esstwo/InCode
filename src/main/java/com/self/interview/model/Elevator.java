@@ -200,22 +200,10 @@ public class Elevator {
 		}
 	}
 
-	/**
-	 * Switch the direction of the elevator, if you process all the floors going in 1 direction
-	 */
-	public void switchDirections() {
-		if(upRequestQueue.isEmpty() && ElevatorDirection.GOING_UP.equals(getDirection())){
-			setDirection(ElevatorDirection.GOING_DOWN);
-			setState(ElevatorState.IDLE);
-		} else if(downRequestQueue.isEmpty() && ElevatorDirection.GOING_DOWN.equals(getDirection())) {
-			setDirection(ElevatorDirection.GOING_UP);
-			setState(ElevatorState.IDLE);
-		} else { 
-			setDirection(ElevatorDirection.STOPPED);
-			setState(ElevatorState.IDLE);
-		}
-	}
 
+	/**
+	 * Go up one floor at a time
+	 */
 	public void goUp() {
 		currentFloor++;
 		try {
@@ -226,6 +214,9 @@ public class Elevator {
 		System.out.println("Elevator id: " + id + " Current Floor: " + currentFloor);
 	}
 
+	/**
+	 * Go down one floor at a time
+	 */
 	public void goDown() {
 		currentFloor--;
 		try {
