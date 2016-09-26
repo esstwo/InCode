@@ -3,19 +3,15 @@ package com.self.interview.InCode;
 import com.self.interview.ControlSystem;
 import com.self.interview.ControlSystemImpl;
 import com.self.interview.RequestListener;
-import com.self.interview.enums.RequestEnum;
 
-/**
- * Hello world!
- *
- */
+
 public class App {
 	
 	
     public static void main( String[] args ) {
     	
     	if(args.length != 2)
-    		throw new IllegalArgumentException("<exception message here");
+    		throw new IllegalArgumentException("need to pass 2 arguments, no. of elevators and total floors");
     	
     	String noOfElevators = args[0];
     	String noOfFloors = args[1];

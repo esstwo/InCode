@@ -11,9 +11,10 @@ import com.self.interview.model.Elevator;
 
 public class ControlSystemImpl implements ControlSystem {
 	
-	private volatile TreeSet<Integer> outsideUpRequestQueue = new TreeSet<>();
-	private volatile TreeSet<Integer> outsideDownRequestQueue = new TreeSet<>();
+	private TreeSet<Integer> outsideUpRequestQueue = new TreeSet<>();
+	private TreeSet<Integer> outsideDownRequestQueue = new TreeSet<>();
 
+	//some defaults. will be overwritten by the constructor.
 	int noOfElevators = 1;
 	int noOfFloors = 10;
 	List<Elevator> elevators;
@@ -24,7 +25,7 @@ public class ControlSystemImpl implements ControlSystem {
 		initializeElevators();
 	}
 
-	public void initializeElevators() {
+	private void initializeElevators() {
 		elevators = new ArrayList<Elevator>();
 		for(int i =0; i <noOfElevators; i++) {
 			elevators.add(new Elevator(i, 1, ElevatorState.IDLE, ElevatorDirection.STOPPED, noOfFloors));
