@@ -71,4 +71,9 @@ In the current submission, this is just assigning all requests to elevator 0.
 It will need modification to assign it to the nearest elevator in a multi-elevator scenario.
 
 
+##KnownIssues
+The simulation runs two threads. One is the `RequestListner` threads which looks for input on the console. The other is the `ControlSystem` thread.
+I wasn't able to simulate the scenario, where a running elevator could get a request in between. However, when the elevator is running, you can pass multiple requests to it and when it stops, it will accept all the requests and should process them in floor order.
+
+
 
