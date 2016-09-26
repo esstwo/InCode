@@ -1,6 +1,18 @@
 # InCode - Elevator Simulator Problem
 This repository is used to create a simulation for an elevator. 
 
+##Assumptions
+1. Passenger object is ignored in this simulation. Any attributes such as weight and no. of passengers that can fit in an elevator are not considered.
+2. Simulation only happens for a single elevator.
+3. Ignoring some validation checks when the user enters the input. 
+4. Some delay (1 second for each floor traversal and 5 seconds for a stop) is added during the elevator processing, only so that the simulation can be seen/read  
+
+##Steps to execute
+Download the source code from Git.
+Assuming you have maven setup, run `mvn package`
+Go to the target directory, and run `java -jar InCode-1.0.0-SNAPSHOT.jar <noOfElevators> <noOfFloors>`
+
+
 ## Main Classes
 
 * Elevator.java
@@ -26,7 +38,7 @@ The requests for floors above the `currentFloor` are added to the `upRequestQueu
 This is the main algorithm that gets the next stop from the list.
 The algorithm is based on the direction (`ElevatorDirection`) and the two lists (`upRequestQueue` and `downRequestQueue`)
 
-**ALGORITH**
+**ALGORITHM**
 If the elevator is going up (`ElevatorDirection.GOING_UP`) and the `upRequestQueue`is not empty, then return the lowest element in the queue which is greater than the `currentElement`
 If no such element exists or the `upRequestQueue` is empty, then change the direction and return the highest element in the `downRequestQueue` 
 
@@ -38,8 +50,10 @@ If both the queues are empty, then change the direction to `ElevatorDirection.ST
 
 This results in an algorithm, which will fulfill all requests in one direction in order and then switch directions.
 Let's take an example, 
-In a 10 floor building, you are on floor 3 and get the following requests to go up - Floor 8, Floor 6, Floor 7, Floor 1.
-Since these are stored in a `TreeSet`, and we are looking at the ceiling w.r.t the `currentFloor`, the order of execution will be Floor 6,7,8 and then reverse to go to floor 1.
+In a 10 floor building, you are on floor 3 and get the following requests to go up - Floor 8, Floor 6, Floor 7, Floor 3 and following requests to go down - Floor 4, Floor 5.
+Since these are stored in a `TreeSet`, and we are looking at the ceiling w.r.t the `currentFloor`, the order of execution will be Floor 6,7,8 and then reverse to go to floor 5 and floor 4 and then finally floor 3 to go up.
+
+The algorithm may result in some starvation or delay in processing requests for top/bottom floors but since I am reversing directions every time i reach the end, it shouldn't be much of a delay.
 
 ####Operation - `operate`
 This method determines whether to go up or go down or sit idle, depending on what the `direction` is and whats the next stop.

@@ -10,7 +10,7 @@ public class App {
     public static void main( String[] args ) {
     	
     	if(args.length != 2)
-    		throw new IllegalArgumentException("need to pass 2 arguments, no. of elevators and total floors");
+    		throw new IllegalArgumentException("\nUsage java -jar InCode-1.0.0-SNAPSHOT.jar <noOfElevators> <noOfFloors>");
     	
     	String noOfElevators = args[0];
     	String noOfFloors = args[1];
