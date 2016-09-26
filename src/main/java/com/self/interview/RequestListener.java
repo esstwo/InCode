@@ -31,7 +31,6 @@ public class RequestListener implements Runnable {
                 	csi.requestElevator(RequestEnum.REQUEST_UP, Integer.parseInt(floor));
                 if("DOWN".equalsIgnoreCase(direction))
                 	csi.requestElevator(RequestEnum.REQUEST_DOWN, Integer.parseInt(floor));
-                
             } catch (IOException e) {
                 e.printStackTrace();
             }

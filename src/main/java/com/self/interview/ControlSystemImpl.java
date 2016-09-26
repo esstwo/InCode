@@ -10,15 +10,14 @@ import com.self.interview.enums.RequestEnum;
 import com.self.interview.model.Elevator;
 
 public class ControlSystemImpl implements ControlSystem {
-
-	private TreeSet<Integer> outsideUpRequestQueue = new TreeSet<>();
-	private TreeSet<Integer> outsideDownRequestQueue = new TreeSet<>();
+	
+	private volatile TreeSet<Integer> outsideUpRequestQueue = new TreeSet<>();
+	private volatile TreeSet<Integer> outsideDownRequestQueue = new TreeSet<>();
 
 	int noOfElevators = 1;
 	int noOfFloors = 10;
-
 	List<Elevator> elevators;
-	
+		
 	public ControlSystemImpl(int noOfElevators, int noOfFloors) {
 		this.noOfElevators = noOfElevators;
 		this.noOfFloors = noOfFloors;
@@ -34,16 +33,23 @@ public class ControlSystemImpl implements ControlSystem {
 	
 	@Override
 	public void operate() {
-		while (true) {
-			assignElevatorToRequest();
-			for(Elevator elevator : elevators)
-				try {
-					elevator.operate();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		}
+		Thread startControlSystem = new Thread(new Runnable() {
+            @Override
+            public void run() {
+            	while (true) {
+        			assignElevatorToRequest();
+        			for(Elevator elevator : elevators)
+        				try {
+        					elevator.operate();
+        				} catch (InterruptedException e) {
+        					// TODO Auto-generated catch block
+        					e.printStackTrace();
+        				}
+        		}	
+            }
+		});
+		
+		startControlSystem.start();
 	}
 
 	@Override
@@ -54,6 +60,11 @@ public class ControlSystemImpl implements ControlSystem {
 			outsideDownRequestQueue.add(floor);
 	}
 
+	
+	/**
+	 * In a single elevator system, it will just add it to the 0th elevator.
+	 * In a multiple elevator system, this will be modified with logic to find the nearest elevator to add the request to.
+	 */
 	@Override
 	public void assignElevatorToRequest() {
 		//for a single elevator system, we can just add it to its up/down queue
@@ -63,12 +74,5 @@ public class ControlSystemImpl implements ControlSystem {
 		while(! outsideUpRequestQueue.isEmpty()) {
 			elevators.get(0).addToUpQueue(outsideUpRequestQueue.pollFirst());
 		}
-
-
-
 	}
-
-
-
-
 }

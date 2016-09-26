@@ -14,9 +14,10 @@ public class Elevator {
 	private Integer currentFloor = 1;
 	private Integer totalFloors;
 
-	private volatile TreeSet<Integer> upRequestQueue = new TreeSet<>();
-	private volatile TreeSet<Integer> downRequestQueue = new TreeSet<>();
+	private TreeSet<Integer> upRequestQueue = new TreeSet<>();
+	private TreeSet<Integer> downRequestQueue = new TreeSet<>();
 
+	
 	public Elevator(int id, Integer currentFloor, ElevatorState state, ElevatorDirection direction, Integer totalFloors){
 		this.id = id;
 		this.currentFloor = currentFloor;
@@ -41,8 +42,11 @@ public class Elevator {
 		this.direction = direction;
 	}
 
+	/**
+	 * Algorithm to get the next stop based on the direction
+	 * @return
+	 */
 	private Integer getNextStop() {
-
 		//if going up, always pick the first entry from the up queue. unless it is empty. 
 		if(ElevatorDirection.GOING_UP.equals(getDirection())) {
 			if(! upRequestQueue.isEmpty()) {
@@ -54,12 +58,11 @@ public class Elevator {
 						this.direction = ElevatorDirection.GOING_DOWN;
 						return downRequestQueue.last();
 					} else {
-						this.direction = ElevatorDirection.STOPPED;
-						return null;
+						return upRequestQueue.first();
 					}
 				}					
 			} else {
-				if(! downRequestQueue.isEmpty()) {
+				if(!downRequestQueue.isEmpty()) {
 					this.direction = ElevatorDirection.GOING_DOWN;
 					return downRequestQueue.last();
 				} else {
@@ -78,8 +81,7 @@ public class Elevator {
 						this.direction = ElevatorDirection.GOING_UP;
 						return upRequestQueue.first();
 					} else {
-						this.direction = ElevatorDirection.STOPPED;
-						return null;
+						return downRequestQueue.last();
 					}
 				}
 			} else {
@@ -95,21 +97,14 @@ public class Elevator {
 		} 
 		
 		if (ElevatorDirection.STOPPED.equals(getDirection())){
-			Integer nextHighestDestination = upRequestQueue.ceiling(this.currentFloor);
-			Integer nextLowestDestination = downRequestQueue.floor(this.currentFloor);
-			if(nextHighestDestination == null && nextLowestDestination == null)
-				return null;
-			else if(nextHighestDestination == null) {
-				this.direction = ElevatorDirection.GOING_DOWN;
-				
-			}
-				
-			
-			
+			//do nothing for now
 		}
 		return null;
 	}
 
+	/**
+	 * Removes the floor from the queue.
+	 */
 	private void removeCurrentStopFromQueue() {
 		if(ElevatorDirection.GOING_UP.equals(getDirection())) {
 			upRequestQueue.remove(currentFloor);
@@ -150,11 +145,17 @@ public class Elevator {
 		this.state = ElevatorState.IDLE;
 	}
 
+	/**
+	 * Just for simulation purposes
+	 */
 	private void openDoor() {
-		System.out.println("Stopped on floor: " + currentFloor);
+		System.out.println("******Stopped on floor: " + currentFloor + " ******");
 		this.state = ElevatorState.STOPPED_ON_FLOOR;
 	}
 
+	/**
+	 * Just for simulation purposes
+	 */
 	private void closeDoor() {
 		System.out.println("Closing elevator door and ready to move again");
 		this.state = ElevatorState.ACTIVE;
@@ -168,8 +169,8 @@ public class Elevator {
 		System.out.println("Button pressed on Floor: " + floor + " to go in the up direction");
 		System.out.println("Adding it to the queue for elevator: " + id);
 		upRequestQueue.add(floor);
-		if(ElevatorDirection.STOPPED.equals(direction))
-			direction = ElevatorDirection.GOING_UP;
+		if(ElevatorDirection.STOPPED.equals(this.direction))
+			this.direction = ElevatorDirection.GOING_UP;
 	}
 
 	/**
@@ -180,8 +181,8 @@ public class Elevator {
 		System.out.println("Button pressed on Floor: " + floor + " to go in the down direction");
 		System.out.println("Adding it to the queue for elevator: " + id);
 		downRequestQueue.add(floor);
-		if(ElevatorDirection.STOPPED.equals(direction))
-			direction = ElevatorDirection.GOING_DOWN;
+		if(ElevatorDirection.STOPPED.equals(this.direction))
+			this.direction = ElevatorDirection.GOING_DOWN;
 	}
 
 	/**
@@ -220,7 +221,6 @@ public class Elevator {
 		try {
 			TimeUnit.SECONDS.sleep(2);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("Elevator id: " + id + " Current Floor: " + currentFloor);
@@ -231,7 +231,6 @@ public class Elevator {
 		try {
 			TimeUnit.SECONDS.sleep(2);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("Elevator id: " + id + " Current Floor: " + currentFloor);
