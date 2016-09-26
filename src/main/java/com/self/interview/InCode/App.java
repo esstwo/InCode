@@ -1,6 +1,5 @@
 package com.self.interview.InCode;
 
-import com.self.interview.ControlSystem;
 import com.self.interview.ControlSystemImpl;
 import com.self.interview.RequestListener;
 
@@ -16,7 +15,11 @@ public class App {
     	String noOfElevators = args[0];
     	String noOfFloors = args[1];
     	
-    	ControlSystem cs = new ControlSystemImpl(Integer.parseInt(noOfElevators), Integer.parseInt(noOfFloors));
+    	if(Integer.parseInt(noOfElevators) != 1)
+    		throw new IllegalArgumentException("Current simulation only works for a single elevator");
+    	
+    	
+    	ControlSystemImpl cs = new ControlSystemImpl(Integer.parseInt(noOfElevators), Integer.parseInt(noOfFloors));
     	cs.operate();
     	
     	Thread requestListenerThread = new Thread(new RequestListener(cs), "RequestListenerThread");

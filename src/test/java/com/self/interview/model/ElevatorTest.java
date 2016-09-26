@@ -1,6 +1,6 @@
 package com.self.interview.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
 import org.junit.Before;
@@ -8,8 +8,6 @@ import org.junit.Test;
 
 import com.self.interview.enums.ElevatorDirection;
 import com.self.interview.enums.ElevatorState;
-
-import junit.framework.Assert;
 
 public class ElevatorTest {
 	

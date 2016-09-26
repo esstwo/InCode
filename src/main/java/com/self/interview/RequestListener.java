@@ -8,9 +8,9 @@ import com.self.interview.enums.RequestEnum;
 
 public class RequestListener implements Runnable {
 	
-	private ControlSystem csi;
+	private ControlSystemImpl csi;
 	
-	public RequestListener(ControlSystem csi) {
+	public RequestListener(ControlSystemImpl csi) {
 		this.csi = csi;
 	}
 
@@ -24,8 +24,13 @@ public class RequestListener implements Runnable {
                         new InputStreamReader(System.in));
                 floorAndDirection = bufferedReader.readLine();
                 String[] split = floorAndDirection.split("&");
+                if(split.length < 2)
+                	continue; //just ignore the input and continue.
+                
                 String floor = split[0];
                 String direction = split[1];
+                if(Integer.parseInt(floor) > csi.getNoOfFloors())
+                	throw new IllegalArgumentException("Invalid Floor Number. Max. no. of floors: " + csi.getNoOfFloors());
                 
                 if("UP".equalsIgnoreCase(direction))
                 	csi.requestElevator(RequestEnum.REQUEST_UP, Integer.parseInt(floor));

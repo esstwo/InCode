@@ -4,7 +4,7 @@ This repository is used to create a simulation for an elevator.
 ## Main Classes
 
 * Elevator.java
-* ControllerSystem.java
+* ControlSystemImpl.java
 
 ###Elevator Class
 The Elevator class is used as an instance of an elevator.
@@ -36,8 +36,25 @@ If no such element exists or the `downRequestQueue` is empty, then change the di
 
 If both the queues are empty, then change the direction to `ElevatorDirection.STOPPED` and return null
 
+This results in an algorithm, which will fulfill all requests in one direction in order and then switch directions.
+Let's take an example, 
+In a 10 floor building, you are on floor 3 and get the following requests to go up - Floor 8, Floor 6, Floor 7, Floor 1.
+Since these are stored in a `TreeSet`, and we are looking at the ceiling w.r.t the `currentFloor`, the order of execution will be Floor 6,7,8 and then reverse to go to floor 1.
+
+####Operation - `operate`
+This method determines whether to go up or go down or sit idle, depending on what the `direction` is and whats the next stop.
 
 
+###ControlSystem
+This class was written to handle requests that come from outside the elevator and direct them to an elevator.
+In this simulation, we assume that there is only a single elevator but we can modify one of the methods and possibly get it to work with multiple elevators.
+
+####Request Elevator - `requestElevator
+This method is called from the outside, when someone is requesting an elevator. Depending on the input, all it does is store the input in the appropriate queue. 
+
+####Assign Elevator - `assignElevatorToRequest`
+In the current submission, this is just assigning all requests to elevator 0.
+It will need modification to assign it to the nearest elevator in a multi-elevator scenario.
 
 
 

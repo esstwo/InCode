@@ -9,21 +9,38 @@ import com.self.interview.enums.ElevatorState;
 import com.self.interview.enums.RequestEnum;
 import com.self.interview.model.Elevator;
 
-public class ControlSystemImpl implements ControlSystem {
+public class ControlSystemImpl {
 	
 	private TreeSet<Integer> outsideUpRequestQueue = new TreeSet<>();
 	private TreeSet<Integer> outsideDownRequestQueue = new TreeSet<>();
 
 	//some defaults. will be overwritten by the constructor.
-	int noOfElevators = 1;
-	int noOfFloors = 10;
-	List<Elevator> elevators;
-		
+	private int noOfElevators = 1;
+	private int noOfFloors = 10;
+	private List<Elevator> elevators;
+
 	public ControlSystemImpl(int noOfElevators, int noOfFloors) {
 		this.noOfElevators = noOfElevators;
 		this.noOfFloors = noOfFloors;
 		initializeElevators();
 	}
+	
+	public int getNoOfFloors() {
+		return noOfFloors;
+	}
+
+	public void setNoOfFloors(int noOfFloors) {
+		this.noOfFloors = noOfFloors;
+	}
+
+	public List<Elevator> getElevators() {
+		return elevators;
+	}
+
+	public void setElevators(List<Elevator> elevators) {
+		this.elevators = elevators;
+	}
+	
 
 	private void initializeElevators() {
 		elevators = new ArrayList<Elevator>();
@@ -32,7 +49,7 @@ public class ControlSystemImpl implements ControlSystem {
 		}
 	}
 	
-	@Override
+
 	public void operate() {
 		Thread startControlSystem = new Thread(new Runnable() {
             @Override
@@ -53,7 +70,6 @@ public class ControlSystemImpl implements ControlSystem {
 		startControlSystem.start();
 	}
 
-	@Override
 	public void requestElevator(RequestEnum request, Integer floor) {
 		if(RequestEnum.REQUEST_UP.equals(request))
 			outsideUpRequestQueue.add(floor);
@@ -66,7 +82,6 @@ public class ControlSystemImpl implements ControlSystem {
 	 * In a single elevator system, it will just add it to the 0th elevator.
 	 * In a multiple elevator system, this will be modified with logic to find the nearest elevator to add the request to.
 	 */
-	@Override
 	public void assignElevatorToRequest() {
 		//for a single elevator system, we can just add it to its up/down queue
 		while(! outsideDownRequestQueue.isEmpty()) {
